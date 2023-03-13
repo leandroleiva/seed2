@@ -10,17 +10,31 @@
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('settings.index')" :active="request()->routeIs('settings.index')">
-                        {{ __('Configuración') }}
-                    </x-nav-link>
-                </div>
+                {{-- MENU --}}
+                @foreach ($menus as $m)
+                <div class="hidden sm:flex sm:items-center sm:ml-6">
+                    <x-dropdown align="right" width="48">
+                            <x-slot name="trigger">
+                                <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150" :active="request()->routeIs('roles.index')">
+                                    <div>{{ $m->name }}</div>
+                                    <div class="ml-1">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </div>
+                                </button>
+                            </x-slot>
+
+                            <x-slot name="content">
+                                @foreach ($m->options as $o)
+                                <x-dropdown-link href="{{$o->route ? route($o->route) : ''}}">
+                                    {{ $o->name }}
+                                </x-dropdown-link>
+                                @endforeach
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
+                    @endforeach
+                {{-- FIN MENU --}}
+
             </div>
 
             <!-- Settings Dropdown -->
